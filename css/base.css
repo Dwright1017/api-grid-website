@@ -1,0 +1,18 @@
+:root {
+  --bg-color: ;
+  --tile-color: ;
+  --favorites-bg: ;
+  --tile-text-color: ;
+  
+}
+
+section, h3 {
+  margin: 0 auto;
+}
+
+ul {
+  display: flex;
+  list-style: none;
+}
+
+
