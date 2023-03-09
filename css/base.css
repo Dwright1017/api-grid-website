@@ -6,6 +6,29 @@
   
 }
 
+section,
+footer,
+header,
+main,
+nav {
+    display: block;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.container,
+.container-fluid {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container {max-width: 1140px;}
+
 section, h3 {
   margin: 0 auto;
 }
