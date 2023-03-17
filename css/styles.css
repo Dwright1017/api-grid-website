@@ -1,4 +1,5 @@
-.api-grid {
+.api-grid,
+.favorites-grid {
   display: flex;
   flex-wrap: wrap;
   padding: 3rem 1rem;
@@ -9,7 +10,8 @@
   margin: 0 auto;
 }
 
-.api-card {
+.movie-card,
+.favorite-card {
   position: relative;
   margin: 0 1rem 1.85rem;
   max-width: 255px;
@@ -23,7 +25,6 @@
 }
 
 .movie-popup-box div {
-  color: var(--color-text-opacity);
   font-size: 0.8125rem;
   line-height: 1.63;
   letter-spacing: 1.63px;
@@ -57,7 +58,8 @@
   border-radius: 8px;
 }
 
-.api-card:hover .movie-popup-box {
+.movie-card:hover .movie-popup-box,
+.favorite-card:hover .movie-popup-box {
   bottom: 20px;
   opacity: 1;
   cursor: pointer;

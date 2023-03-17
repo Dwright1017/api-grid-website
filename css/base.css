@@ -12,6 +12,7 @@ header,
 main,
 nav {
     display: block;
+    text-align: center;
 }
 
 *, *::before, *::after {
@@ -29,8 +30,9 @@ nav {
 
 .container {max-width: 1140px;}
 
-section, h3 {
+section, h2 {
   margin: 0 auto;
+  font-size: 3rem;
 }
 
 ul {
