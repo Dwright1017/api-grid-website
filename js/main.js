@@ -1,5 +1,6 @@
 
 const favoritesGrid = getElementById('favorites-grid');
+const favoritesCount = 0;
 // Fetch data from the API
 fetch('https://jsonplaceholder.typicode.com/posts')
   .then(response => response.json())
@@ -67,10 +68,17 @@ fetch('https://jsonplaceholder.typicode.com/posts')
     const addToFavoritesButtons = document.querySelectorAll('.favorite-btn');
     addToFavoritesButtons.forEach(button => {
       button.addEventListener('click', addToFavorites);
+      favoritesCount++;
     });
     
     const removeFromFavoritesButtons = document.querySelectorAll('.remove-from-favorites');
     removeFromFavoritesButtons.forEach(button => {
       button.addEventListener('click', removeFromFavorites);
+      favoritesCount--;
     });
   });
+
+  if(favoritesCount < 1) {
+    const noFavorites = `<div class="no-favorites">No Favorites Selected!</div>`;
+    favoritesGrid.appendChild(noFavorites);
+  }

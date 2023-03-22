@@ -16,25 +16,18 @@
         <div class="site-logo">
             <h2>Movies</h2>
         </div>
-        <div class="navbar-nav">
-            <ul class="ul-defaults-none main-menu">
-                <li class="nav-item">Home</li>
-                <li class="nav-item" data-open="about">About Me</li>
-                <li class="nav-item" data-open="contact">Contact</li>
-            </ul>
-        </div>
     </nav>
 </header>
 
 <section>
-  <h3>Favorites</h3>
+  <h2>Favorites</h2>
   <div class="favorites-grid" class="favorites-grid">
     <div class="favorite-card" data-item="api" data-open="api-1" id="favorite-container">
       <div class="card-body">
         <img src="https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg" alt="movie">
         <div class="movie-popup-box">
           <h3>${selectedItem.title}</h3>
-          <p>${selectedItem.body}</p>
+          <div>${selectedItem.body}</div>
           <button class="remove-from-favorites" data-id="${selectedItem.id}">Remove from Favorites</button>
         </div>
     </div>
@@ -112,6 +105,6 @@
 </div>
 </section>
 
-  <script src="script.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
