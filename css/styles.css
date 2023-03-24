@@ -46,8 +46,15 @@ header {
   right: 20px;
   transition: 0.4s;
   z-index: 1;
-  padding: 1.25rem 1.875rem;
+  color: white;
+  background: lightgray;
+  height: 160px;
+  border-radius: 25px;
   opacity: 0;
+}
+
+.movie-popup-box div{
+  padding-top: 30px;
 }
 
 .movie-popup-box:before {
@@ -79,6 +86,10 @@ header {
   margin-bottom: 0;
 }
 
-.favorite-btn {
-  width: 10px;
+.favorite-btn, .remove-from-favorites {
+  position: relative;
+  bottom: 10px;
+  background: transparent;
+  border: none;
+  font-size: 26px;
 }

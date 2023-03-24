@@ -1,8 +1,7 @@
 
-const favoritesGrid = getElementById('favorites-grid');
 const favoritesCount = 0;
 // Fetch data from the API
-fetch('https://jsonplaceholder.typicode.com/posts')
+fetch('https://api.themoviedb.org/3/movie/550?api_key=32a5f3c6ca624e33f29bf9ea47ee29f7')
   .then(response => response.json())
   .then(data => {
 
@@ -12,11 +11,11 @@ fetch('https://jsonplaceholder.typicode.com/posts')
       const itemHtml = `
       <div class="movie-card" data-item="movie" data-open="api-${items.indexOf(item)}" id="movie-container">
         <div class="card-body">
-          <img src="${item.cover}" alt="movie">
+          <img src="${item.poster_path}" alt="movie">
         <div class="movie-popup-box">
           <h3 class="movie-title">${item.title}</h3>
-          <p class="movie-genre">${item.body}</p>
-          <button class="favorite-btn" data-id="${item.id}">Add to Favorites</button>
+          <div class="movie-genre">${item.genres.filter(genre => genre.name)}</div>
+          <button class="favorite-btn" data-id="${item.id}">&#9734;</button>
         </div>
         </div>
       </div>
@@ -28,20 +27,20 @@ fetch('https://jsonplaceholder.typicode.com/posts')
     function addToFavorites(event) {
       const itemId = event.target.dataset.id;
       const selectedItem = items.find(item => item.id === parseInt(itemId));
-      const favoriteContainer = document.getElementById('favorite-container');
+      const favoriteGrid = document.getElementById('favorites-grid');
       const favoriteHtml = `
       <div class="favorite-card" data-item="api" data-open="api-1" id="favorite-container">
       <div class="card-body">
-        <img src="${selectedItem.cover}" alt="movie">
+        <img src="${selectedItem.poster_path}" alt="movie">
         <div class="movie-popup-box">
           <h3 class="move-title">${selectedItem.title}</h3>
-          <p class="movie-genre">${selectedItem.body}</p>
+          <div class="movie-genre">${selectedItem.genres.filter(genre => genre.name)}</div>
           <button class="remove-from-favorites" data-id="${selectedItem.id}">Remove from Favorites</button>
         </div>
         </div>
       </div>
       `;
-      favoriteContainer.insertAdjacentHTML('beforeend', favoriteHtml);
+      favoriteGrid.appendChild(favoriteHtml);
       event.target.parentElement.remove();
     }
     
@@ -52,10 +51,10 @@ fetch('https://jsonplaceholder.typicode.com/posts')
       const movieHtml = `
       <div class="movie-card" data-item="movie" data-open="api-${items.indexOf(item)}" id="movie-container">
       <div class="card-body">
-        <img src="${selectedFavorite.cover}" alt="movie">
+        <img src="${selectedFavorite.poster_path}" alt="movie">
       <div class="movie-popup-box">
         <h3 class="movie-title">${selectedFavorite.title}</h3>
-        <p class="movie-genre">${selectedFavorite.body}</p>
+        <div class="movie-genre">${selectedFavorite.genres.filter(genre => genre.name)}</div>
         <button class="favorite-btn" data-id="${selectedFavorite.id}">Add to Favorites</button>
       </div>
       </div>
