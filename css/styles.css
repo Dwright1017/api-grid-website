@@ -15,7 +15,7 @@ header {
   margin-bottom: 50px;
 }
 
-.movie-card,
+.amiibo-card,
 .favorite-card {
   position: relative;
   margin: 0 1rem 1.85rem;
@@ -29,7 +29,7 @@ header {
   border-radius: 8px;
 }
 
-.movie-popup-box div {
+.amiibo-popup-box div {
   font-size: 0.8125rem;
   line-height: 1.63;
   letter-spacing: 1.63px;
@@ -39,7 +39,7 @@ header {
   pointer-events: none;
 }
 
-.movie-popup-box {
+.amiibo-popup-box {
   position: absolute;
   bottom: 0;
   left: 20px;
@@ -53,11 +53,11 @@ header {
   opacity: 0;
 }
 
-.movie-popup-box div{
+.amiibo-popup-box div{
   padding-top: 30px;
 }
 
-.movie-popup-box:before {
+.amiibo-popup-box:before {
   position: absolute;
   content: "";
   background: var(--bg);
@@ -70,14 +70,14 @@ header {
   border-radius: 8px;
 }
 
-.movie-card:hover .movie-popup-box,
-.favorite-card:hover .movie-popup-box {
+.amiibo-card:hover .amiibo-popup-box,
+.favorite-card:hover .amiibo-popup-box {
   bottom: 20px;
   opacity: 1;
   cursor: pointer;
 }
 
-.movie-popup-box h3 {
+.amiibo-popup-box h3 {
   pointer-events: none;
   color: var(--color-headings);
   font-size: 1.3125rem;

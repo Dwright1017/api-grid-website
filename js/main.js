@@ -1,20 +1,22 @@
 
 const favoritesCount = 0;
 // Fetch data from the API
-fetch('https://api.themoviedb.org/3/movie/550?api_key=32a5f3c6ca624e33f29bf9ea47ee29f7')
+fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
   .then(response => response.json())
   .then(data => {
-
-    const items = data.slice(0, 30);
-    const apiGrid = getElementById('api-grid');
-    items.forEach(item => {
+    
+    const arr = data.amiibo.map(entry => entry);
+    const amiibos = arr.slice(0, 30);
+    const apiGrid = document.getElementById('api-grid');
+    const favoriteGrid = document.getElementById('favorites-grid');
+    amiibos.forEach(item => {
       const itemHtml = `
-      <div class="movie-card" data-item="movie" data-open="api-${items.indexOf(item)}" id="movie-container">
+      <div class="amiibo-card" data-item="amiibo" data-open="api-${amiibos.indexOf(item)}" id="amiibo-container">
         <div class="card-body">
-          <img src="${item.poster_path}" alt="movie">
-        <div class="movie-popup-box">
-          <h3 class="movie-title">${item.title}</h3>
-          <div class="movie-genre">${item.genres.filter(genre => genre.name)}</div>
+          <img src="${item.image}" alt="${item.name}">
+        <div class="amiibo-popup-box">
+          <h3 class="amiibo-name">${item.name}</h3>
+          <div class="amiibo-genre">${item.gameSeries}</div>
           <button class="favorite-btn" data-id="${item.id}">&#9734;</button>
         </div>
         </div>
@@ -26,15 +28,15 @@ fetch('https://api.themoviedb.org/3/movie/550?api_key=32a5f3c6ca624e33f29bf9ea47
     
     function addToFavorites(event) {
       const itemId = event.target.dataset.id;
-      const selectedItem = items.find(item => item.id === parseInt(itemId));
-      const favoriteGrid = document.getElementById('favorites-grid');
+      const selectedItem = amiibos.find(item => item.id === parseInt(itemId));
+      
       const favoriteHtml = `
       <div class="favorite-card" data-item="api" data-open="api-1" id="favorite-container">
       <div class="card-body">
-        <img src="${selectedItem.poster_path}" alt="movie">
-        <div class="movie-popup-box">
-          <h3 class="move-title">${selectedItem.title}</h3>
-          <div class="movie-genre">${selectedItem.genres.filter(genre => genre.name)}</div>
+        <img src="${selectedItem.image}" alt="${item.name}">
+        <div class="amiibo-popup-box">
+          <h3 class="amiibo-name">${selectedItem.name}</h3>
+          <div class="amiibo-genre">${selectedItem.gameSeries}</div>
           <button class="remove-from-favorites" data-id="${selectedItem.id}">Remove from Favorites</button>
         </div>
         </div>
@@ -46,21 +48,21 @@ fetch('https://api.themoviedb.org/3/movie/550?api_key=32a5f3c6ca624e33f29bf9ea47
     
     function removeFromFavorites(event) {
       const itemId = event.target.dataset.id;
-      const selectedFavorite = items.find(item => item.id === parseInt(itemId));
-      const movieContainer = document.getElementById('movie-container');
-      const movieHtml = `
-      <div class="movie-card" data-item="movie" data-open="api-${items.indexOf(item)}" id="movie-container">
+      const selectedFavorite = amiibos.find(item => item.id === parseInt(itemId));
+      
+      const amiiboHtml = `
+      <div class="amiibo-card" data-item="amiibo" data-open="api-${amiibos.indexOf(item)}" id="amiibo-container">
       <div class="card-body">
-        <img src="${selectedFavorite.poster_path}" alt="movie">
-      <div class="movie-popup-box">
-        <h3 class="movie-title">${selectedFavorite.title}</h3>
-        <div class="movie-genre">${selectedFavorite.genres.filter(genre => genre.name)}</div>
+        <img src="${selectedFavorite.image}" alt="${item.name}">
+      <div class="amiibo-popup-box">
+        <h3 class="amiibo-name">${selectedFavorite.name}</h3>
+        <div class="amiibo-genre">${selectedFavorite.gameSeries}</div>
         <button class="favorite-btn" data-id="${selectedFavorite.id}">Add to Favorites</button>
       </div>
       </div>
     </div>
       `;
-      movieContainer.insertAdjacentHTML('beforeend', movieHtml);
+      apiGrid.appendChild(amiiboHtml);
       event.target.parentElement.remove();
     }
     
@@ -76,8 +78,3 @@ fetch('https://api.themoviedb.org/3/movie/550?api_key=32a5f3c6ca624e33f29bf9ea47
       favoritesCount--;
     });
   });
-
-  if(favoritesCount < 1) {
-    const noFavorites = `<div class="no-favorites">No Favorites Selected!</div>`;
-    favoritesGrid.appendChild(noFavorites);
-  }
