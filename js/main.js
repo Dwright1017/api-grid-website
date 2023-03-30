@@ -1,5 +1,49 @@
 
 const favoritesCount = 0;
+const apiGrid = document.getElementById('api-grid');
+const favoriteGrid = document.getElementById('favorites-grid');
+
+const buildCard = (item) => {
+  const amiiboName = document.createElement('h3');
+  amiiboName.classList.add('amiibo-name');
+  const nameText = document.createTextNode(item.name);
+
+  const amiiboSeries = document.createElement('div');
+  amiiboSeries.classList.add('amiibo-series');
+  const Seriestext = document.createTextNode(item.gameSeries);
+
+  const favoritebtn = document.createElement('button');
+  favoritebtn.classList.add('favorite-btn');
+  favoritebtn.setAttribute('data-id', `${item.id}`);
+  const btnText = document.createTextNode('&#9733');
+
+  const popupBox = document.createElement('div');
+  popupBox.classList.add('amiibo-popup-box');
+
+  const amiiboImage = document.createElement('img');
+  amiiboImage.setAttribute('src', `${item.image}`);
+  amiiboImage.setAttribute('alt', `${item.name}`);
+
+  const cardBody = document.createElement('div');
+  cardBody.classList.add('card-body');
+
+  const card = document.createElement('div');
+  card.classList.add('amiibo-card');
+  amiiboImage.setAttribute('data-item', 'amiibo');
+  
+  card.setAttribute('id', 'amiibo-container');
+
+  apiGrid.appendChild(card);
+  card.appendChild(cardBody);
+  cardBody.appendChild(amiiboImage);
+  cardBody.appendChild(popupBox);
+  popupBox.appendChild(amiiboName);
+  popupBox.appendChild(amiiboSeries);
+  popupBox.appendChild(favoritebtn);
+  amiiboName.appendChild(nameText);
+  amiiboSeries.appendChild(Seriestext);
+  favoritebtn.appendChild(btnText);
+}
 // Fetch data from the API
 fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
   .then(response => response.json())
@@ -7,22 +51,9 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
     
     const arr = data.amiibo.map(entry => entry);
     const amiibos = arr.slice(0, 30);
-    const apiGrid = document.getElementById('api-grid');
-    const favoriteGrid = document.getElementById('favorites-grid');
+    
     amiibos.forEach(item => {
-      const itemHtml = `
-      <div class="amiibo-card" data-item="amiibo" data-open="api-${amiibos.indexOf(item)}" id="amiibo-container">
-        <div class="card-body">
-          <img src="${item.image}" alt="${item.name}">
-        <div class="amiibo-popup-box">
-          <h3 class="amiibo-name">${item.name}</h3>
-          <div class="amiibo-genre">${item.gameSeries}</div>
-          <button class="favorite-btn" data-id="${item.id}">&#9734;</button>
-        </div>
-        </div>
-      </div>
-      `;
-      apiGrid.appendChild(itemHtml);
+      buildCard(item);
     });
     
     
@@ -30,19 +61,7 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       const itemId = event.target.dataset.id;
       const selectedItem = amiibos.find(item => item.id === parseInt(itemId));
       
-      const favoriteHtml = `
-      <div class="favorite-card" data-item="api" data-open="api-1" id="favorite-container">
-      <div class="card-body">
-        <img src="${selectedItem.image}" alt="${item.name}">
-        <div class="amiibo-popup-box">
-          <h3 class="amiibo-name">${selectedItem.name}</h3>
-          <div class="amiibo-genre">${selectedItem.gameSeries}</div>
-          <button class="remove-from-favorites" data-id="${selectedItem.id}">Remove from Favorites</button>
-        </div>
-        </div>
-      </div>
-      `;
-      favoriteGrid.appendChild(favoriteHtml);
+      buildCard(selectedItem);
       event.target.parentElement.remove();
     }
     
@@ -50,19 +69,7 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       const itemId = event.target.dataset.id;
       const selectedFavorite = amiibos.find(item => item.id === parseInt(itemId));
       
-      const amiiboHtml = `
-      <div class="amiibo-card" data-item="amiibo" data-open="api-${amiibos.indexOf(item)}" id="amiibo-container">
-      <div class="card-body">
-        <img src="${selectedFavorite.image}" alt="${item.name}">
-      <div class="amiibo-popup-box">
-        <h3 class="amiibo-name">${selectedFavorite.name}</h3>
-        <div class="amiibo-genre">${selectedFavorite.gameSeries}</div>
-        <button class="favorite-btn" data-id="${selectedFavorite.id}">Add to Favorites</button>
-      </div>
-      </div>
-    </div>
-      `;
-      apiGrid.appendChild(amiiboHtml);
+      apiGrid.appendChild(buildCard(selectedFavorite));
       event.target.parentElement.remove();
     }
     
@@ -72,7 +79,7 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       favoritesCount++;
     });
     
-    const removeFromFavoritesButtons = document.querySelectorAll('.remove-from-favorites');
+    const removeFromFavoritesButtons = document.querySelectorAll('.favorite-btn.active');
     removeFromFavoritesButtons.forEach(button => {
       button.addEventListener('click', removeFromFavorites);
       favoritesCount--;
