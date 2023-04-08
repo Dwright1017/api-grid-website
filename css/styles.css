@@ -51,6 +51,7 @@ header {
   height: 160px;
   border-radius: 25px;
   opacity: 0;
+  cursor: default;
 }
 
 .amiibo-popup-box div{
@@ -86,10 +87,15 @@ header {
   margin-bottom: 0;
 }
 
-.favorite-btn, .remove-from-favorites {
+.favorite-btn {
   position: relative;
   bottom: 10px;
   background: transparent;
   border: none;
   font-size: 26px;
+  cursor: pointer;
+}
+
+.favorite-btn.active {
+  color: yellow;
 }

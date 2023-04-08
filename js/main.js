@@ -1,13 +1,13 @@
 
-let favoritesCount = 0;
+
 const apiGrid = document.getElementById('api-grid');
 const favoriteGrid = document.getElementById('favorites-grid');
-let favorite = false;
+
 
 const buildCard = (item) => {
   const amiiboName = document.createElement('h3');
   amiiboName.classList.add('amiibo-name');
-  const nameText = document.createTextNode(item.character);
+  const nameText = document.createTextNode(item.name);
 
   const amiiboSeries = document.createElement('div');
   amiiboSeries.classList.add('amiibo-series');
@@ -16,7 +16,7 @@ const buildCard = (item) => {
   const favoritebtn = document.createElement('button');
   favoritebtn.classList.add('favorite-btn');
   favoritebtn.setAttribute('data-id', `${item.head}`);
-  const btnText = document.createTextNode('&#9733');
+  const btnText = document.createTextNode('Add to Favorites');
 
   const popupBox = document.createElement('div');
   popupBox.classList.add('amiibo-popup-box');
@@ -34,12 +34,7 @@ const buildCard = (item) => {
   
   card.setAttribute('id', 'amiibo-container');
 
-  if (favorite === 0) {
-    favoriteGrid.appendChild(card);
-  } else {
-    apiGrid.appendChild(card);
-  }
-
+  
   card.appendChild(cardBody);
   cardBody.appendChild(amiiboImage);
   cardBody.appendChild(popupBox);
@@ -49,7 +44,9 @@ const buildCard = (item) => {
   amiiboName.appendChild(nameText);
   amiiboSeries.appendChild(Seriestext);
   favoritebtn.appendChild(btnText);
+  return card;
 }
+
 // Fetch data from the API
 fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
   .then(response => response.json())
@@ -59,45 +56,37 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
     const amiibos = arr.slice(0, 30);
     
     amiibos.forEach(item => {
-      buildCard(item);
+      apiGrid.appendChild(buildCard(item))
     });
     
     
     function addToFavorites(event) {
       const itemId = event.target.dataset.head;
       const selectedItem = amiibos.find(item => item.head === parseInt(itemId));
-      favorite = true;
+      event.target.classList.add('active')
       
-      buildCard(selectedItem);
+      favoriteGrid.appendChild(buildFavorite(selectedItem))
       event.target.parentElement.remove();
     }
     
     function removeFromFavorites(event) {
       const itemId = event.target.dataset.head;
-      const selectedFavorite = amiibos.find(item => item.head === parseInt(itemId));
-      favorite = false;
-      
-      buildCard(selectedFavorite);
+      const selectedFavorite = amiibos.find(item => item.head === parseInt(itemId));      
+      event.target.classList.remove('active')
+
+      apiGrid.appendChild(buildCard(selectedFavorite))
       event.target.parentElement.remove();
     }
-    
-    const addToFavoritesButtons = document.querySelectorAll('.favorite-btn');
+
+    const addToFavoritesButtons = document.querySelectorAll('favorite-btn');
     addToFavoritesButtons.forEach(button => {
       button.addEventListener('click', addToFavorites);
-      favoritesCount++;
     });
     
-    const removeFromFavoritesButtons = document.querySelectorAll('.favorite-btn.active');
+    const removeFromFavoritesButtons = document.querySelectorAll('favorite-btn.active');
     removeFromFavoritesButtons.forEach(button => {
       button.addEventListener('click', removeFromFavorites);
-      favoritesCount--;
     });
+    
 
-    if (favoritesCount < 1) {
-      const noFavorites = document.createElement('div');
-      const noFavText = document.createTextNode('No Favorites!');
-
-      noFavorites.appendChild(noFavText);
-      favoriteGrid.appendChild(noFavorites);
-    }
   });
