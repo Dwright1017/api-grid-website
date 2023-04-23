@@ -96,6 +96,10 @@ header {
   cursor: pointer;
 }
 
+.favorite-btn::after {
+  content: "\2606";
+}
+
 .favorite-btn.active {
   color: yellow;
 }

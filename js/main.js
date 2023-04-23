@@ -1,5 +1,7 @@
 
-
+const dataId = '[data-id]'
+const IdValues = document.querySelectorAll(dataId);
+const root = document.documentElement;
 const apiGrid = document.getElementById('api-grid');
 const favoriteGrid = document.getElementById('favorites-grid');
 
@@ -16,7 +18,6 @@ const buildCard = (item) => {
   const favoritebtn = document.createElement('button');
   favoritebtn.classList.add('favorite-btn');
   favoritebtn.setAttribute('data-id', `${item.head}`);
-  const btnText = document.createTextNode('Add to Favorites');
 
   const popupBox = document.createElement('div');
   popupBox.classList.add('amiibo-popup-box');
@@ -43,7 +44,6 @@ const buildCard = (item) => {
   popupBox.appendChild(favoritebtn);
   amiiboName.appendChild(nameText);
   amiiboSeries.appendChild(Seriestext);
-  favoritebtn.appendChild(btnText);
   return card;
 }
 
@@ -61,29 +61,31 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
     
     
     function addToFavorites(event) {
-      const itemId = event.target.dataset.head;
+      const itemId = event.target.dataset.id;
       const selectedItem = amiibos.find(item => item.head === parseInt(itemId));
       event.target.classList.add('active')
+      
       
       favoriteGrid.appendChild(buildFavorite(selectedItem))
       event.target.parentElement.remove();
     }
     
     function removeFromFavorites(event) {
-      const itemId = event.target.dataset.head;
+      const itemId = event.target.dataset.id
       const selectedFavorite = amiibos.find(item => item.head === parseInt(itemId));      
-      event.target.classList.remove('active')
+      event.target.classList.remove('.active')
 
+      alert("Remove")
       apiGrid.appendChild(buildCard(selectedFavorite))
       event.target.parentElement.remove();
     }
 
-    const addToFavoritesButtons = document.querySelectorAll('favorite-btn');
+    const addToFavoritesButtons = document.querySelectorAll('.favorite-btn');
     addToFavoritesButtons.forEach(button => {
       button.addEventListener('click', addToFavorites);
     });
     
-    const removeFromFavoritesButtons = document.querySelectorAll('favorite-btn.active');
+    const removeFromFavoritesButtons = document.querySelectorAll('.favorite-btn.active');
     removeFromFavoritesButtons.forEach(button => {
       button.addEventListener('click', removeFromFavorites);
     });
