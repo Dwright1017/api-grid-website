@@ -62,22 +62,25 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
     
     function addToFavorites(event) {
       const itemId = event.target.dataset.id;
-      const selectedItem = amiibos.find(item => item.head === parseInt(itemId));
-      event.target.classList.add('active')
+      const selectedItem = amiibos.find(item => item.head === itemId);
+      console.log(selectedItem)
       
-      
-      favoriteGrid.appendChild(buildFavorite(selectedItem))
-      event.target.parentElement.remove();
+      newFavorite = buildCard(selectedItem)
+      favoriteGrid.appendChild(newFavorite)
+      favbutton = newFavorite.querySelector('.favorite-btn')
+      favbutton.classList.add('active')
+      event.target.parentElement.parentElement.parentElement.remove();
     }
     
     function removeFromFavorites(event) {
       const itemId = event.target.dataset.id
-      const selectedFavorite = amiibos.find(item => item.head === parseInt(itemId));      
-      event.target.classList.remove('.active')
+      const selectedFavorite = amiibos.find(item => item.head === itemId);      
+      
 
-      alert("Remove")
-      apiGrid.appendChild(buildCard(selectedFavorite))
-      event.target.parentElement.remove();
+      amiiboCard = buildCard(selectedFavorite)
+      apiGrid.appendChild(amiiboCard)
+      
+      event.target.parentElement.parentElement.parentElement.remove();
     }
 
     const addToFavoritesButtons = document.querySelectorAll('.favorite-btn');
@@ -85,9 +88,9 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       button.addEventListener('click', addToFavorites);
     });
     
-    const removeFromFavoritesButtons = document.querySelectorAll('.favorite-btn.active');
+    const removeFromFavoritesButtons = document.querySelectorAll('active');
     removeFromFavoritesButtons.forEach(button => {
-      button.addEventListener('click', removeFromFavorites);
+      button.addEventListener('click', console.log('YIPPIE'));
     });
     
 
