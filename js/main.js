@@ -63,7 +63,6 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
     function addToFavorites(event) {
       const itemId = event.target.dataset.id;
       const selectedItem = amiibos.find(item => item.head === itemId);
-      console.log(selectedItem)
       
       newFavorite = buildCard(selectedItem)
       favoriteGrid.appendChild(newFavorite)
@@ -83,15 +82,29 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       event.target.parentElement.parentElement.parentElement.remove();
     }
 
-    const addToFavoritesButtons = document.querySelectorAll('.favorite-btn');
-    addToFavoritesButtons.forEach(button => {
-      button.addEventListener('click', addToFavorites);
-    });
-    
-    const removeFromFavoritesButtons = document.querySelectorAll('active');
-    removeFromFavoritesButtons.forEach(button => {
-      button.addEventListener('click', console.log('YIPPIE'));
-    });
-    
+    apiGrid.addEventListener('click', function(event) {
+      if (event.target.classList.contains('favorite-btn')) {
+        addToFavorites(event);
+          }
+        });
+
+    favoriteGrid.addEventListener('click', function(event) {
+  if (event.target.classList.contains('favorite-btn')) {
+    removeFromFavorites(event);
+      }
+    });    
 
   });
+
+  function sortByName() {
+    const cardList = apiGrid.querySelectorAll('.amiibo-card');
+    const sortedList = Array.from(cardList).sort((a, b) => {
+      const aName = a.querySelector('.amiibo-name').textContent;
+      const bName = b.querySelector('.amiibo-name').textContent;
+      return aName.localeCompare(bName);
+    });
+    apiGrid.innerHTML = '';
+    sortedList.forEach(card => {
+      apiGrid.appendChild(card);
+    });
+  }
