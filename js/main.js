@@ -6,6 +6,7 @@ const apiGrid = document.getElementById('api-grid');
 const favoriteGrid = document.getElementById('favorites-grid');
 
 
+
 const buildCard = (item) => {
   const amiiboName = document.createElement('h3');
   amiiboName.classList.add('amiibo-name');
@@ -17,7 +18,8 @@ const buildCard = (item) => {
 
   const favoritebtn = document.createElement('button');
   favoritebtn.classList.add('favorite-btn');
-  favoritebtn.setAttribute('data-id', `${item.head}`);
+  favoritebtn.setAttribute('id', `${item.head}`);
+  favoritebtn.setAttribute('data-location', 'main');
 
   const popupBox = document.createElement('div');
   popupBox.classList.add('amiibo-popup-box');
@@ -47,7 +49,7 @@ const buildCard = (item) => {
   return card;
 }
 
-// Fetch data from the API
+// Fetch data from the API and build initial table
 fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
   .then(response => response.json())
   .then(data => {
@@ -58,42 +60,22 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
     amiibos.forEach(item => {
       apiGrid.appendChild(buildCard(item))
     });
-    
-    
-    function addToFavorites(event) {
-      const itemId = event.target.dataset.id;
-      const selectedItem = amiibos.find(item => item.head === itemId);
-      
-      newFavorite = buildCard(selectedItem)
-      favoriteGrid.appendChild(newFavorite)
-      favbutton = newFavorite.querySelector('.favorite-btn')
-      favbutton.classList.add('active')
-      event.target.parentElement.parentElement.parentElement.remove();
-    }
-    
-    function removeFromFavorites(event) {
-      const itemId = event.target.dataset.id
-      const selectedFavorite = amiibos.find(item => item.head === itemId);      
-      
 
-      amiiboCard = buildCard(selectedFavorite)
-      apiGrid.appendChild(amiiboCard)
-      
-      event.target.parentElement.parentElement.parentElement.remove();
-    }
-
-    apiGrid.addEventListener('click', function(event) {
-      if (event.target.classList.contains('favorite-btn')) {
-        addToFavorites(event);
-          }
-        });
-
-    favoriteGrid.addEventListener('click', function(event) {
-  if (event.target.classList.contains('favorite-btn')) {
-    removeFromFavorites(event);
+    const favBtns = document.querySelectorAll('.favorite-btn');
+    console.log(favBtns);
+    favBtns.forEach((item) => {
+    item.addEventListener('click', () => {
+      const GridLocation = item.dataset.location;
+      const btnId = item.id;
+      let direction = '';
+      if (GridLocation === 'favorites') {
+        direction = 'toMain';
+      } else if (GridLocation === 'main') {
+        direction = 'toFavs';
       }
-    });    
-
+      switchContainers(btnId, direction);
+    })
+  })
   });
 
   function sortByName() {
@@ -107,4 +89,27 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
     sortedList.forEach(card => {
       apiGrid.appendChild(card);
     });
+};
+
+
+//Function for switching to favorites container and vice versa and update LS
+function switchContainers(id, direction) {
+  const favbutton = document.getElementById(id)
+  console.log(favbutton);
+  const card = favbutton.parentElement.parentElement.parentElement;
+  console.log(card);
+
+  if (direction === 'toMain') {
+    apiGrid.appendChild(card)
+    favbutton.classList.remove('active')
+    favbutton.dataset.location = 'main';
+    localStorage.setItem()
+  } else if (direction === 'toFavs') {
+    favoriteGrid.appendChild(card)
+    favbutton.classList.add('active')
+    favbutton.dataset.location = 'favorites'
   }
+}
+
+
+//Event listeners for switch buttons
