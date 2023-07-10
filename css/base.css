@@ -30,9 +30,14 @@ nav {
 
 .container {max-width: 1140px;}
 
-section, h2 {
+section, h2, h4 {
   margin: 0 auto;
   font-size: 3rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+  margin-top: 20px;
 }
 
 ul {

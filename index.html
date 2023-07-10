@@ -14,7 +14,7 @@
   <header class="site-header">
     <nav class="navbar">
         <div class="site-logo">
-            <h2>Movies</h2>
+            <h2>Pick Your Favorite Amiibos!</h2>
         </div>
     </nav>
 </header>
@@ -22,22 +22,13 @@
 <section>
   <h2>Favorites</h2>
   <div class="favorites-grid" id="favorites-grid">
-    <div class="favorite-card" data-item="api" data-open="api-1" id="favorite-container">
-      <div class="card-body">
-        <img src="https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg" alt="movie">
-        <div class="amiibo-popup-box">
-          <h3>${selectedItem.title}</h3>
-          <div>${selectedItem.body}</div>
-          <button class="remove-from-favorites" data-id="${selectedItem.id}">&#9733;</button>
-        </div>
-    </div>
-  </div>
   </div>
 </section>
 
 <section>
-  <button onclick="sortByName()">Sort Alphabetically</button>
   <h2>Amiibos</h2>
+  <h4>Click the star to add to favorites</h4>
+  <button onclick="sortByName()">Sort Alphabetically</button>
   <div class="api-grid" id="api-grid">
   </div>
 </section>

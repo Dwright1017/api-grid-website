@@ -61,8 +61,9 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       apiGrid.appendChild(buildCard(item))
     });
 
+    //Event listeners for switch buttons
     const favBtns = document.querySelectorAll('.favorite-btn');
-    console.log(favBtns);
+    
     favBtns.forEach((item) => {
     item.addEventListener('click', () => {
       const GridLocation = item.dataset.location;
@@ -76,8 +77,23 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       switchContainers(btnId, direction);
     })
   })
+
+  //Update LS
+  favBtns.forEach(btn => {
+    const id = btn.id;
+    const favorite = localStorage.getItem(id) === 'true';
+    const card = btn.parentElement.parentElement.parentElement;
+  
+    if (favorite) {
+      favoriteGrid.appendChild(card);
+      btn.classList.add('active')
+      btn.dataset.location = 'favorites'
+    }
+  })
+
   });
 
+  //Sort A-Z
   function sortByName() {
     const cardList = apiGrid.querySelectorAll('.amiibo-card');
     const sortedList = Array.from(cardList).sort((a, b) => {
@@ -92,7 +108,7 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
 };
 
 
-//Function for switching to favorites container and vice versa and update LS
+//Function for switching to favorites container and vice versa and set to LS
 function switchContainers(id, direction) {
   const favbutton = document.getElementById(id)
   console.log(favbutton);
@@ -103,13 +119,11 @@ function switchContainers(id, direction) {
     apiGrid.appendChild(card)
     favbutton.classList.remove('active')
     favbutton.dataset.location = 'main';
-    localStorage.setItem()
+    localStorage.setItem(id, 'false')
   } else if (direction === 'toFavs') {
     favoriteGrid.appendChild(card)
     favbutton.classList.add('active')
     favbutton.dataset.location = 'favorites'
+    localStorage.setItem(id, 'true')
   }
-}
-
-
-//Event listeners for switch buttons
+};
