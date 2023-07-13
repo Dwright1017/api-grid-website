@@ -106,7 +106,8 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       btn.dataset.location = 'favorites'
     }
   })
-});
+})
+.catch(e => e);
   //Sort A-Z
 
 function sortByName(direction) {
