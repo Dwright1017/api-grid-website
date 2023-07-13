@@ -4,8 +4,8 @@ const IdValues = document.querySelectorAll(dataId);
 const root = document.documentElement;
 const apiGrid = document.getElementById('api-grid');
 const favoriteGrid = document.getElementById('favorites-grid');
-
-
+const seriesList = document.getElementById('series-list');
+console.log(seriesList);
 
 const buildCard = (item) => {
   const amiiboName = document.createElement('h3');
@@ -61,6 +61,22 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       apiGrid.appendChild(buildCard(item))
     });
 
+    //Data for each Game Series
+    const SeriesData = amiibos.map(amiibo => amiibo.gameSeries);
+    function TotalSeries(arr) {
+      return [...new Set(arr)];
+    }
+
+    const AllGames = TotalSeries(SeriesData);
+    console.log(AllGames);
+    AllGames.forEach(entry => {
+      const NumOfEntrys = SeriesData.filter(val => val === entry).length;
+      const listItem = document.createElement('li')
+      const itemText = document.createTextNode(`${entry}: ${NumOfEntrys}`)
+      listItem.appendChild(itemText)
+      seriesList.appendChild(listItem)
+    })
+
     //Event listeners for switch buttons
     const favBtns = document.querySelectorAll('.favorite-btn');
     
@@ -90,30 +106,35 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       btn.dataset.location = 'favorites'
     }
   })
-
-  });
-
+});
   //Sort A-Z
-  function sortByName() {
-    const cardList = apiGrid.querySelectorAll('.amiibo-card');
-    const sortedList = Array.from(cardList).sort((a, b) => {
-      const aName = a.querySelector('.amiibo-name').textContent;
-      const bName = b.querySelector('.amiibo-name').textContent;
-      return aName.localeCompare(bName);
-    });
-    apiGrid.innerHTML = '';
-    sortedList.forEach(card => {
-      apiGrid.appendChild(card);
-    });
+
+function sortByName(direction) {
+  const cardList = apiGrid.querySelectorAll('.amiibo-card');
+  const sortedList = Array.from(cardList).sort((a, b) => {
+    const aName = a.querySelector('.amiibo-name').textContent;
+    const bName = b.querySelector('.amiibo-name').textContent;
+    return direction === 'asc' ? aName.localeCompare(bName) : bName.localeCompare(aName);
+  });
+  apiGrid.innerHTML = '';
+  sortedList.forEach(card => {
+    apiGrid.appendChild(card);
+  });
 };
+
+const sortBtns = document.querySelectorAll('.sort-btn');
+sortBtns.forEach(btn => {
+  btn.addEventListener('click', (event) => {
+    const direction = event.target.dataset.sort;
+    sortByName(direction);
+  })
+})
 
 
 //Function for switching to favorites container and vice versa and set to LS
 function switchContainers(id, direction) {
   const favbutton = document.getElementById(id)
-  console.log(favbutton);
   const card = favbutton.parentElement.parentElement.parentElement;
-  console.log(card);
 
   if (direction === 'toMain') {
     apiGrid.appendChild(card)

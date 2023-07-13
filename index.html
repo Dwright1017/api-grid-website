@@ -17,10 +17,13 @@
             <h2>Pick Your Favorite Amiibos!</h2>
         </div>
     </nav>
+    <h3>This is how many amiibos are from each game series:</h3>
+    <div class="series-list" id="series-list">
+    </div>
 </header>
 
 <section>
-  <h2>Favorites</h2>
+  <h2><span class="fav-star">&#9733;</span>Favorites<span class="fav-star">&#9733;</span></h2>
   <div class="favorites-grid" id="favorites-grid">
   </div>
 </section>
@@ -28,7 +31,8 @@
 <section>
   <h2>Amiibos</h2>
   <h4>Click the star to add to favorites</h4>
-  <button onclick="sortByName()">Sort Alphabetically</button>
+  <button class="sort-btn" data-sort="asc">Sort A-Z</button>
+  <button class="sort-btn" data-sort="desc">Sort Z-A</button>
   <div class="api-grid" id="api-grid">
   </div>
 </section>

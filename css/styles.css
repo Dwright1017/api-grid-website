@@ -2,6 +2,14 @@ header {
   margin: 20px auto 100px;
 }
 
+.series-list {
+  width: 300px;
+  list-style: none;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.25rem;
+}
+
 .api-grid,
 .favorites-grid {
   display: flex;
@@ -13,6 +21,10 @@ header {
   width: 100%;
   margin: 0 auto;
   margin-bottom: 100px;
+}
+
+.fav-star {
+  color: goldenrod;
 }
 
 .amiibo-card,
