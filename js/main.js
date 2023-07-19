@@ -49,17 +49,50 @@ const buildCard = (item) => {
   return card;
 }
 
+
+
 // Fetch data from the API and build initial table
 fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
   .then(response => response.json())
   .then(data => {
-    
     const arr = data.amiibo.map(entry => entry);
     const amiibos = arr.slice(0, 30);
-    
+
     amiibos.forEach(item => {
       apiGrid.appendChild(buildCard(item))
     });
+
+    //Event listeners for switch buttons
+    const favBtns = document.querySelectorAll('.favorite-btn');
+    console.log(favBtns);
+    
+    favBtns.forEach((item) => {
+    item.addEventListener('click', () => {
+      const GridLocation = item.dataset.location;
+      const btnId = item.id;
+      let direction = '';
+        if (GridLocation === 'favorites') {
+          direction = 'toMain';
+        } else if (GridLocation === 'main') {
+          direction = 'toFavs';
+        }
+        switchContainers(btnId, direction);
+      })
+    });
+
+    //Update LS
+    favBtns.forEach(btn => {
+      const id = btn.id;
+      const favorite = localStorage.getItem(id) === 'true';
+      const card = btn.parentElement.parentElement.parentElement;
+
+      if (favorite) {
+        favoriteGrid.appendChild(card);
+        btn.classList.add('active')
+        btn.dataset.location = 'favorites'
+      }
+    })
+    
 
     //Data for each Game Series
     const SeriesData = amiibos.map(amiibo => amiibo.gameSeries);
@@ -68,7 +101,6 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
     }
 
     const AllGames = TotalSeries(SeriesData);
-    console.log(AllGames);
     AllGames.forEach(entry => {
       const NumOfEntrys = SeriesData.filter(val => val === entry).length;
       const listItem = document.createElement('li')
@@ -76,40 +108,14 @@ fetch('https://www.amiiboapi.com/api/amiibo/?amiiboSeries=Super Smash Bros.')
       listItem.appendChild(itemText)
       seriesList.appendChild(listItem)
     })
-
-    //Event listeners for switch buttons
-    const favBtns = document.querySelectorAll('.favorite-btn');
-    
-    favBtns.forEach((item) => {
-    item.addEventListener('click', () => {
-      const GridLocation = item.dataset.location;
-      const btnId = item.id;
-      let direction = '';
-      if (GridLocation === 'favorites') {
-        direction = 'toMain';
-      } else if (GridLocation === 'main') {
-        direction = 'toFavs';
-      }
-      switchContainers(btnId, direction);
-    })
-  })
-
-  //Update LS
-  favBtns.forEach(btn => {
-    const id = btn.id;
-    const favorite = localStorage.getItem(id) === 'true';
-    const card = btn.parentElement.parentElement.parentElement;
-  
-    if (favorite) {
-      favoriteGrid.appendChild(card);
-      btn.classList.add('active')
-      btn.dataset.location = 'favorites'
-    }
-  })
-})
+  }
+)
 .catch(e => e);
-  //Sort A-Z
 
+
+
+
+//Sort A-Z
 function sortByName(direction) {
   const cardList = apiGrid.querySelectorAll('.amiibo-card');
   const sortedList = Array.from(cardList).sort((a, b) => {
